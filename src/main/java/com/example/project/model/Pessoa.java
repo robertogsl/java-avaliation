@@ -50,7 +50,11 @@ public class Pessoa {
         return endereco;
     }
 
-    public void setEndereco(Endereco endereco) {
+    public void setEndereco(List<Endereco> endereco) {
+        this.endereco = endereco;
+    }
+
+    public void addEndereco(Endereco endereco) {
         this.endereco.add(endereco);
     }
 }

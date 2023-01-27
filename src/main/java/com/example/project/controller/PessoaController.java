@@ -69,4 +69,72 @@ public class PessoaController {
 
         return ResponseEntity.status(204).build();
     }
+
+    @CrossOrigin
+    @PostMapping("/{id}/endereco")
+    private ResponseEntity addEndereco(@PathVariable int id, @RequestBody Endereco novoEndereco) {
+
+        List<Pessoa> pessoaList = pessoaRepository.findAll();
+
+        for (Pessoa p : pessoaList) {
+            if (p.getId() == id) {
+                for (Endereco e : p.getEndereco()) {
+                    if (e.getDefault()) {
+                        e.setDefault(false);
+                    }
+                }
+
+                novoEndereco.setDefault(true);
+                p.addEndereco(novoEndereco);
+                pessoaRepository.save(p);
+
+                return ResponseEntity.status(201).build();
+            }
+        }
+
+        return ResponseEntity.status(404).build();
+    }
+
+    @CrossOrigin
+    @PutMapping("/{id}/endereco/{enderecoId}/default")
+    private ResponseEntity setEnderecoPadrao(@PathVariable int id, @PathVariable int enderecoId) {
+
+        List<Pessoa> pessoaList = pessoaRepository.findAll();
+
+        for (Pessoa p : pessoaList) {
+            if (p.getId() == id) {
+                for (Endereco e : p.getEndereco()) {
+                    if (e.getDefault()) {
+                        e.setDefault(false);
+                    }
+                    if (e.getId() == enderecoId) {
+                        e.setDefault(true);
+                    }
+                }
+
+                pessoaRepository.save(p);
+
+                return ResponseEntity.status(200).build();
+            }
+        }
+
+        return ResponseEntity.status(404).build();
+    }
+
+    @CrossOrigin
+    @GetMapping("/{id}/endereco")
+    private ResponseEntity listarEnderecos(@PathVariable int id) {
+
+        List<Pessoa> pessoas = pessoaRepository.findAll();
+
+        for (Pessoa p : pessoas) {
+            if (p.getId() == id) {
+                List<Endereco> enderecos = p.getEndereco();
+
+                return ResponseEntity.status(200).body(enderecos);
+            }
+        }
+
+        return ResponseEntity.status(204).build();
+    }
 }
