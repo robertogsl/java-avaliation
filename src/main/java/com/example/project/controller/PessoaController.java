@@ -109,12 +109,12 @@ public class PessoaController {
                     }
                     if (e.getId() == enderecoId) {
                         e.setDefault(true);
+
+                        pessoaRepository.save(p);
+
+                        return ResponseEntity.status(200).build();
                     }
                 }
-
-                pessoaRepository.save(p);
-
-                return ResponseEntity.status(200).build();
             }
         }
 
